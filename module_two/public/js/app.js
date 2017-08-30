@@ -1,7 +1,7 @@
 const Card = (props) => {
     return (
         <div style={{ margin: '1em' }}>
-            <img width="75" src={ props.avata_url } alt=""/>
+            <img width="75" src={ props.avatar_url } alt=""/>
             <div style={{ display: 'inline-block', marginLeft: 10 }}>
                 <div style={{ fontSize: '1.25em', fontWeight: 'bold' }}>{ props.name }</div>
                 <div>{ props.company }</div>
@@ -9,6 +9,19 @@ const Card = (props) => {
         </div>
     );
 };
+
+let data = [
+    {
+        name: "Paul O'Shannessy",
+        avatar_url: "https://avatars1.githubusercontent.com/u/8445?v=3",
+        company: "Facebook"
+    },
+    {
+        name: "Ben Alpert",
+        avatar_url: "https://avatars1.githubusercontent.com/u/6820?v=3",
+        company: "Facebook"
+    }
+]
 
 const CardList = (props) => {
     return (
@@ -18,4 +31,4 @@ const CardList = (props) => {
     );
 };
 
-ReactDOM.render(<Card />, document.getElementById('content'));
+ReactDOM.render(<CardList cards={ data } />, document.getElementById('content'));
