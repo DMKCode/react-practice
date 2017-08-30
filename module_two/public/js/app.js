@@ -10,19 +10,6 @@ const Card = (props) => {
     );
 };
 
-let data = [
-    {
-        name: "Paul O'Shannessy",
-        avatar_url: "https://avatars1.githubusercontent.com/u/8445?v=3",
-        company: "Facebook"
-    },
-    {
-        name: "Ben Alpert",
-        avatar_url: "https://avatars1.githubusercontent.com/u/6820?v=3",
-        company: "Facebook"
-    }
-]
-
 const CardList = (props) => {
     return (
         <div>
@@ -32,10 +19,31 @@ const CardList = (props) => {
 };
 
 class Form extends React.Component {
+    state = { 
+        userName: '' 
+    }
+
+    handleSubmit = (event) => {
+        event.preventDefault();
+        console.log('Event: Form Submit', this.state.userName);
+        fetch(`https://api.github.com/users/${this.state.userName}`, {
+            method: 'get'
+        }).then(function(response) {
+            console.log(response);
+        }).catch(function(err) {
+            console.log(err);
+        });
+    }
+
     render() {
         return (
-            <form>
-                <input type="text" placeholder="Github username" />
+            <form onSubmit={this.handleSubmit} >
+                <input 
+                    value={this.state.userName}
+                    onChange={(event) => this.setState({ userName: event.target.value })}
+                    type="text" 
+                    placeholder="Github username" 
+                />
                 <button type="submit">Add card</button>
             </form>
         );
@@ -43,11 +51,26 @@ class Form extends React.Component {
 }
 
 class App extends React.Component {
+    state = {
+        cards: [
+            {
+                name: "Paul O'Shannessy",
+                avatar_url: "https://avatars1.githubusercontent.com/u/8445?v=3",
+                company: "Facebook"
+            },
+            {
+                name: "Ben Alpert",
+                avatar_url: "https://avatars1.githubusercontent.com/u/6820?v=3",
+                company: "Facebook"
+            }
+        ]
+    };
+
     render() {
         return (
             <div>
                 <Form />
-                <CardList cards={ data } />
+                <CardList cards={ this.state.cards } />
             </div>
         );
     }
