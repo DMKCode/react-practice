@@ -31,4 +31,26 @@ const CardList = (props) => {
     );
 };
 
-ReactDOM.render(<CardList cards={ data } />, document.getElementById('content'));
+class Form extends React.Component {
+    render() {
+        return (
+            <form>
+                <input type="text" placeholder="Github username" />
+                <button type="submit">Add card</button>
+            </form>
+        );
+    }
+}
+
+class App extends React.Component {
+    render() {
+        return (
+            <div>
+                <Form />
+                <CardList cards={ data } />
+            </div>
+        );
+    }
+}
+
+ReactDOM.render(<App />, document.getElementById('content'));
