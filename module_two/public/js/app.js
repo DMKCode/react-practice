@@ -13,7 +13,7 @@ const Card = (props) => {
 const CardList = (props) => {
     return (
         <div>
-            { props.cards.map(card => <Card { ...card } />) }
+            { props.cards.map(card => <Card key={ card.id } { ...card } />) }
         </div>
     );
 };
@@ -28,9 +28,13 @@ class Form extends React.Component {
         console.log('Event: Form Submit', this.state.userName);
         fetch(`https://api.github.com/users/${this.state.userName}`, {
             method: 'get'
-        }).then(function(response) {
-            console.log(response);
-        }).catch(function(err) {
+        })
+        .then(data => data.json())
+        .then(data => {
+            this.props.onSubmit(data);
+            this.setState({ userName: ''});
+        })
+        .catch(function(err) {
             console.log(err);
         });
     }
@@ -52,24 +56,19 @@ class Form extends React.Component {
 
 class App extends React.Component {
     state = {
-        cards: [
-            {
-                name: "Paul O'Shannessy",
-                avatar_url: "https://avatars1.githubusercontent.com/u/8445?v=3",
-                company: "Facebook"
-            },
-            {
-                name: "Ben Alpert",
-                avatar_url: "https://avatars1.githubusercontent.com/u/6820?v=3",
-                company: "Facebook"
-            }
-        ]
+        cards: []
     };
+
+    addNewCard = (cardInfo) => {
+        this.setState(prevState => ({
+            cards: prevState.cards.concat(cardInfo)
+        }));
+    }
 
     render() {
         return (
             <div>
-                <Form />
+                <Form onSubmit={ this.addNewCard }/>
                 <CardList cards={ this.state.cards } />
             </div>
         );
