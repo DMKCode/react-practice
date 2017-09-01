@@ -2,6 +2,7 @@ const Stars = (props) => {
     const numberOfStars = 1 + Math.floor(Math.random() * 9);
 
     let stars = [];
+    // different style in Numbers component
     for(let i=0; i < numberOfStars; i++) {
         stars.push(<i key={i} className="fa fa-star"></i>);
     }
@@ -24,7 +25,8 @@ const Button = (props) => {
 const Answer = (props) => {
     return (
         <div className="col-5"> 
-            ...
+            <span>5</span>
+            <span>6</span>
         </div>
     );
 };
@@ -33,13 +35,13 @@ const Numbers = (props) => {
     return (
         <div className="card text-center">
             <div>
-                <span>1</span>
-                <span>2</span>
-                <span>3</span>
+                {Numbers.list.map((number, i) => <span key={i}>{number+1}</span>)}
             </div>
         </div>
     );
 }
+
+Numbers.list = Array.from(Array(9).keys());
 
 class Game extends React.Component {
     render() {
