@@ -1,9 +1,8 @@
 const Stars = (props) => {
-    const numberOfStars = 1 + Math.floor(Math.random() * 9);
 
     let stars = [];
     // different style in Numbers component
-    for(let i=0; i < numberOfStars; i++) {
+    for(let i=0; i < props.numberOfStars; i++) {
         stars.push(<i key={i} className="fa fa-star"></i>);
     }
     
@@ -54,8 +53,11 @@ Numbers.list = Array.from(Array(9).keys());
 
 class Game extends React.Component {
     state = {
-        selectedNumbers: []
+        selectedNumbers: [],
+        numberOfStars: 1 + Math.floor(Math.random() * 9)
     }
+
+
 
     selectNumber = (clickedNumber) => {
         this.setState(prevState => ({
@@ -68,7 +70,7 @@ class Game extends React.Component {
                 <h3>Play Nine</h3>
                 <hr/>
                 <div className="row">
-                    <Stars />
+                    <Stars numberOfStars={ this.state.numberOfStars } />
                     <Button />
                     <Answer selectedNumbers={ this.state.selectedNumbers } />
                 </div>
