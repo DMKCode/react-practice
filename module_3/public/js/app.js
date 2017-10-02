@@ -39,11 +39,13 @@ const Numbers = (props) => {
         }
     }
 
+    const handleOnClick = (event) => props.selectNumber(event.target.dataset.value);
+
     return (
         <div className="card text-center">
             <div>
                 { Numbers.list.map((number, i) => 
-                    <span key={i} className={ numberClassName(number) }>{ number+1 } </span>
+                    <span key={i} className={ numberClassName(number) } data-value={ number+1 } onClick={ handleOnClick }>{ number+1 } </span>
                 )}
             </div>
         </div>
@@ -54,9 +56,14 @@ Numbers.list = Array.from(Array(9).keys());
 
 class Game extends React.Component {
     state = {
-        selectedNumbers: [2,4]
+        selectedNumbers: []
     }
 
+    selectNumber = (clickedNumber) => {
+        this.setState(prevState => ({
+            selectedNumbers: this.state.selectedNumbers.concat(clickedNumber)
+        }));
+    }
     render() {
         return (
             <div className="container">
@@ -68,7 +75,7 @@ class Game extends React.Component {
                     <Answer selectedNumbers={ this.state.selectedNumbers } />
                 </div>
                 <br/>
-                <Numbers selectedNumbers={ this.state.selectedNumbers } />
+                <Numbers selectedNumbers={ this.state.selectedNumbers } selectNumber={ this.selectNumber } />
             </div>
         );
     }
