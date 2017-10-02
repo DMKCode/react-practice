@@ -34,18 +34,16 @@ const Answer = (props) => {
 
 const Numbers = (props) => {
     const numberClassName = (number) => {
-        if(props.selectedNumbers.indexOf(number+1) >= 0) {
+        if(props.selectedNumbers.indexOf(number) >= 0) {
             return 'selected';
         }
     }
-
-    const handleOnClick = (event) => props.selectNumber(event.target.dataset.value);
 
     return (
         <div className="card text-center">
             <div>
                 { Numbers.list.map((number, i) => 
-                    <span key={i} className={ numberClassName(number) } data-value={ number+1 } onClick={ handleOnClick }>{ number+1 } </span>
+                    <span key={i} className={ numberClassName(number+1) } onClick={ () => props.selectNumber(number+1) }>{ number+1 } </span>
                 )}
             </div>
         </div>
