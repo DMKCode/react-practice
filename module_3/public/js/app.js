@@ -57,8 +57,6 @@ class Game extends React.Component {
         numberOfStars: 1 + Math.floor(Math.random() * 9)
     }
 
-
-
     selectNumber = (clickedNumber) => {
         if (this.state.selectedNumbers.indexOf(clickedNumber) >= 0) return;
         this.setState(prevState => ({
