@@ -14,9 +14,36 @@ const Stars = (props) => {
 };
 
 const Button = (props) => {
+    let button;
+
+    switch(props.answwerIsCorrect) {
+        case true:
+            button = 
+                <button className="btn btn-success">
+                    <i className="fa fa-check"></i>
+                </button>;
+            break;
+
+        case false:
+            button = 
+                <button className="btn btn-danger">
+                    <i className="fa fa-times"></i>
+                </button>;
+            break;
+
+        default:
+            button = 
+            <button className="btn"
+                    onClick={ props.checkAnswer } 
+                    disabled={ props.selectedNumbers.length === 0 }>
+                    =
+            </button>; 
+            break;
+    }
+    
     return (
         <div className="col-2"> 
-            <button className="btn" disabled={ props.selectedNumbers.length === 0 }>=</button>
+            { button }
         </div>
     );
 };
@@ -71,9 +98,10 @@ class Game extends React.Component {
 
     checkAnswer = () => {
         this.setState(prevState => ({
-            answwerIsCorrect: prevState.numberOfStars === prevState.selectedNumbers.reduce(accumulator, currentValue => accumulator + currentValue, 0)
-        }))
-    }
+            answwerIsCorrect: prevState.numberOfStars === prevState.selectedNumbers.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
+        }));
+    };
+
     render() {
         const { selectedNumbers, numberOfStars, answwerIsCorrect } = this.state;
         return (
