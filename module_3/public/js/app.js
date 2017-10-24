@@ -54,18 +54,25 @@ Numbers.list = Array.from(Array(9).keys());
 class Game extends React.Component {
     state = {
         selectedNumbers: [],
-        numberOfStars: 1 + Math.floor(Math.random() * 9)
-    }
+        numberOfStars: 1 + Math.floor(Math.random() * 9),
+        answwerIsCorrect: null,
+    };
 
     selectNumber = (clickedNumber) => {
         if (this.state.selectedNumbers.indexOf(clickedNumber) >= 0) return;
         this.setState(prevState => ({
             selectedNumbers: this.state.selectedNumbers.concat(clickedNumber)
         }));
-    }
+    };
 
     unSelectNumber = (clickedNumber) => {
         this.setState(prevState => ({ selectedNumbers: prevState.selectedNumbers.filter(number => number !== clickedNumber) }));
+    };
+
+    checkAnswer = () => {
+        this.setState(prevState => ({
+            answwerIsCorrect: prevState.numberOfStars === prevState.selectedNumbers.reduce(accumulator, currentValue => accumulator + currentValue, 0)
+        }))
     }
     render() {
         const { selectedNumbers, numberOfStars } = this.state;
