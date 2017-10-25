@@ -19,7 +19,7 @@ const Button = (props) => {
     switch(props.answwerIsCorrect) {
         case true:
             button = 
-                <button className="btn btn-success">
+                <button className="btn btn-success" onClick={ props.acceptAnswer }>
                     <i className="fa fa-check"></i>
                 </button>;
             break;
@@ -60,6 +60,9 @@ const Answer = (props) => {
 
 const Numbers = (props) => {
     const numberClassName = (number) => {
+        if(props.usedNumbers.indexOf(number) >= 0) {
+            return 'used';
+        }
         if(props.selectedNumbers.indexOf(number) >= 0) {
             return 'selected';
         }
@@ -83,17 +86,21 @@ class Game extends React.Component {
         selectedNumbers: [],
         numberOfStars: 1 + Math.floor(Math.random() * 9),
         answwerIsCorrect: null,
+        usedNumbers: [],
     };
 
     selectNumber = (clickedNumber) => {
         if (this.state.selectedNumbers.indexOf(clickedNumber) >= 0) return;
         this.setState(prevState => ({
+            answwerIsCorrect: null,
             selectedNumbers: this.state.selectedNumbers.concat(clickedNumber)
         }));
     };
 
     unSelectNumber = (clickedNumber) => {
-        this.setState(prevState => ({ selectedNumbers: prevState.selectedNumbers.filter(number => number !== clickedNumber) }));
+        this.setState(prevState => ({ 
+            answwerIsCorrect: null,
+            selectedNumbers: prevState.selectedNumbers.filter(number => number !== clickedNumber) }));
     };
 
     checkAnswer = () => {
@@ -102,8 +109,23 @@ class Game extends React.Component {
         }));
     };
 
+    acceptAnswer = () => {
+        this.setState(prevState => ({
+            usedNumbers: prevState.usedNumbers.concat(prevState.selectedNumbers),
+            selectedNumbers: [],
+            answwerIsCorrect: null,
+            numberOfStars: 1 + Math.floor(Math.random() * 9),
+        }));
+    };
+
     render() {
-        const { selectedNumbers, numberOfStars, answwerIsCorrect } = this.state;
+        const { 
+            selectedNumbers, 
+            numberOfStars, 
+            answwerIsCorrect,
+            usedNumbers 
+        } = this.state;
+
         return (
             <div className="container">
                 <h3>Play Nine</h3>
@@ -112,12 +134,15 @@ class Game extends React.Component {
                     <Stars numberOfStars={ numberOfStars } />
                     <Button selectedNumbers={ selectedNumbers }
                             checkAnswer={ this.checkAnswer }
-                            answwerIsCorrect={ answwerIsCorrect } />
+                            answwerIsCorrect={ answwerIsCorrect }
+                            acceptAnswer={ this.acceptAnswer } />
                     <Answer selectedNumbers={ selectedNumbers } 
                             unSelectNumber={ this.unSelectNumber } />
                 </div>
                 <br/>
-                <Numbers selectedNumbers={ selectedNumbers } selectNumber={ this.selectNumber } />
+                <Numbers selectedNumbers={ selectedNumbers } 
+                        selectNumber={ this.selectNumber } 
+                        usedNumbers={ usedNumbers } />
             </div>
         );
     }
