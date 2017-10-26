@@ -87,13 +87,24 @@ const Numbers = (props) => {
 
 Numbers.list = Array.from(Array(9).keys());
 
+const DoneFrame = (props) => {
+    return (
+        <div className="text-center">
+            <h2>{ props.doneStatus }</h2>
+        </div>
+    );
+}
+
 class Game extends React.Component {
+    static randomNumber = () => 1 + Math.floor(Math.random() * 9);
+    
     state = {
         selectedNumbers: [],
-        numberOfStars: 1 + Math.floor(Math.random() * 9),
+        numberOfStars: Game.randomNumber(),
         answwerIsCorrect: null,
         usedNumbers: [],
         redraws: 5,
+        doneStatus: '',
     };
 
     selectNumber = (clickedNumber) => {
@@ -121,7 +132,7 @@ class Game extends React.Component {
             usedNumbers: prevState.usedNumbers.concat(prevState.selectedNumbers),
             selectedNumbers: [],
             answwerIsCorrect: null,
-            numberOfStars: 1 + Math.floor(Math.random() * 9),
+            numberOfStars: Game.randomNumber(),
         }));
     };
 
@@ -130,7 +141,7 @@ class Game extends React.Component {
         this.setState(prevState => ({
             selectedNumbers: [],
             answwerIsCorrect: null,
-            numberOfStars: 1 + Math.floor(Math.random() * 9),
+            numberOfStars: Game.randomNumber(),
             redraws: prevState.redraws - 1,
         }));
     }
@@ -141,7 +152,8 @@ class Game extends React.Component {
             numberOfStars, 
             answwerIsCorrect,
             usedNumbers,
-            redraws 
+            redraws,
+            doneStatus, 
         } = this.state;
 
         return (
@@ -160,9 +172,13 @@ class Game extends React.Component {
                             unSelectNumber={ this.unSelectNumber } />
                 </div>
                 <br/>
-                <Numbers selectedNumbers={ selectedNumbers } 
+                { doneStatus ? 
+                    <DoneFrame doneStatus={ doneStatus } /> :
+                    <Numbers selectedNumbers={ selectedNumbers } 
                         selectNumber={ this.selectNumber } 
                         usedNumbers={ usedNumbers } />
+                }
+                
             </div>
         );
     }
